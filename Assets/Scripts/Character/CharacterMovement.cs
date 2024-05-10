@@ -9,13 +9,21 @@ public class CharacterMovement : MonoBehaviour
     private CharacterController characterController;
     private CharacterAnimations animations;
 
+    // Walking
     [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float zSpeed = 1.5f;
     private Vector2 currentMovementInput;
     private Vector3 currentMovement;
 
+    // Jumping
+    private float initialJumpVelocity;
+    [SerializeField] private float maxJumpHeight = 1.0f;
+    [SerializeField] private float maxJumpTime = 0.5f;
+
     private float groundedGravity = -.5f;
     private float gravity = -9.8f;
+
+    private bool isJumpPressed = false;
 
     private void Awake()
     {
@@ -25,6 +33,24 @@ public class CharacterMovement : MonoBehaviour
 
         inputActions.Character.Movement.performed += OnMovement;
         inputActions.Character.Movement.canceled += OnMovement;
+        inputActions.Character.Jump.started += OnJump;
+        inputActions.Character.Jump.canceled += OnJump;
+
+        SetupJumpVariables();
+    }
+
+    private void SetupJumpVariables()
+    {
+        float timeToApex = maxJumpTime / 2;
+        gravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
+        initialJumpVelocity = (2 * maxJumpHeight) / timeToApex;
+        Debug.Log(gravity);
+        Debug.Log(initialJumpVelocity);
+    }
+
+    private void OnJump(InputAction.CallbackContext context)
+    {
+        isJumpPressed = context.ReadValueAsButton();
     }
 
     private void OnMovement(InputAction.CallbackContext context)
@@ -63,7 +89,18 @@ public class CharacterMovement : MonoBehaviour
         }
         else
         {
-            currentMovement.y = gravity;
+            float previousYVelocity = currentMovement.y;
+            float newYVelocity = currentMovement.y + gravity * Time.deltaTime;
+            float nextYVelocity = (previousYVelocity + newYVelocity) * .5f;
+            currentMovement.y = nextYVelocity;
+        }
+    }
+
+    private void HandleJump()
+    {
+        if(characterController.isGrounded && isJumpPressed)
+        {
+            currentMovement.y = initialJumpVelocity;
         }
     }
 
@@ -73,7 +110,8 @@ public class CharacterMovement : MonoBehaviour
         RotatePlayer();
         HandleAnimatios();
         HandleGravity();
-        Debug.Log(currentMovement);
+        HandleJump();
+
         characterController.Move(Time.deltaTime * currentMovement);
     }
 }

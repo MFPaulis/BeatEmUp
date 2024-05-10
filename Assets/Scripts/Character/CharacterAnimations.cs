@@ -7,12 +7,14 @@ public class CharacterAnimations : MonoBehaviour
     private Animator animator;
 
     private int walking;
+    private int jumping;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
 
         walking = Animator.StringToHash(AnimationTags.WALKING);
+        jumping = Animator.StringToHash(AnimationTags.JUMPING);
     }
 
     public void Walk(bool move)
