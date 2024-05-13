@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
     {   
         if (isSpawned) {
             enemySpawner = GetComponentInParent<EnemySpawner>();
-            Debug.Log(enemySpawner);
+            //Debug.Log(enemySpawner);
         }
     }
 

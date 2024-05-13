@@ -10,15 +10,18 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float countdown;
     [SerializeField] private GameObject spawnPoint;
     [SerializeField] GameObject target;
+    [SerializeField] GameObject levelArea;
 
     
     public Wave[] waves;
     public int currentWaveIndex = 0;
 
     private bool readyToCountDown;
+    private Bounds levelAreaBounds;
 
     void Start()
     {
+        levelAreaBounds = levelArea.GetComponent<Collider>().bounds;
         readyToCountDown = true;
 
         for(int i = 0; i < waves.Length; i++) 
@@ -32,7 +35,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (currentWaveIndex >= waves.Length) 
         {
-            Debug.Log("You survived every wave");
+            //Debug.Log("You survived every wave");
             return;
         }
 
@@ -62,7 +65,25 @@ public class EnemySpawner : MonoBehaviour
             for (int i = 0; i < waves[currentWaveIndex].enemies.Length; i++) {
                 waves[currentWaveIndex].enemies[i].target = target;
                 
+                //getting random spawn point
+                float randomX = Random.Range(10f, 15f);
+                if(target.transform.position.x + randomX > levelAreaBounds.max.x) {
+                    if(target.transform.position.x - randomX < levelAreaBounds.min.x) {
+                        randomX = target.transform.position.x + 5f;
+                    } 
+                    else {
+                        randomX = target.transform.position.x - randomX;
+                    }
+                } 
+                else {
+                    randomX = target.transform.position.x + randomX;
+                }
+                float randomY = levelAreaBounds.max.y + 1f;
+                float randomZ = Random.Range(levelAreaBounds.min.z, levelAreaBounds.max.z);
+                Vector3 enemyPosition = new Vector3(randomX, randomY, randomZ);
+
                 Enemy enemy = Instantiate(waves[currentWaveIndex].enemies[i], spawnPoint.transform);
+                enemy.transform.position = enemyPosition;
                 enemy.transform.SetParent(spawnPoint.transform);
 
                 yield return new WaitForSeconds(waves[currentWaveIndex].timeToNextEnemy);
