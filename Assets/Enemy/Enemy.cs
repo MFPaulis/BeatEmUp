@@ -6,21 +6,28 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
 
-    [SerializeField] GameObject target;
+    [SerializeField] public GameObject target;
     [SerializeField] float movingSpeed;
     [SerializeField] float attackSpeed;
     [SerializeField] float minAttackDistance;
     [SerializeField] float maxAttackDistance;
     [SerializeField] float minDistance;
     [SerializeField] float maxDistance;
+    [SerializeField] bool isSpawned = true;
 
     private bool attackBack = false;
 
+    //for spawned enemies
+    private float countdown = 5f;
+    private EnemySpawner enemySpawner;
 
     // Start is called before the first frame update
     void Start()
-    {
-        
+    {   
+        if (isSpawned) {
+            enemySpawner = GetComponentInParent<EnemySpawner>();
+            Debug.Log(enemySpawner);
+        }
     }
 
     // Update is called once per frame
@@ -34,6 +41,21 @@ public class Enemy : MonoBehaviour
         {
             ChasePlayer(movingSpeed);
         }
+
+        //for spawned enemies
+        if (isSpawned) {
+            countdown -= Time.deltaTime;
+
+            if (countdown <= 0)
+            {
+
+                Destroy(gameObject);
+
+                enemySpawner.waves[enemySpawner.currentWaveIndex].enemiesLeft--;
+                
+            }
+        }
+
     }
 
     void Attack(float distance)
