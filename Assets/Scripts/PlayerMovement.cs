@@ -44,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(jump * forceConst, ForceMode.Impulse);
             canJump = false;
         }
+
     }
 }
 

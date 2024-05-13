@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -20,5 +21,9 @@ public class CameraMovement : MonoBehaviour
         pos.x = player.transform.position.x;
         //pos = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
         transform.position = pos;
+
+        if(Mathf.Abs(player.transform.position.y - transform.position.y) > 10.0f) {
+            SceneManager.LoadScene("GameOver");
+        }
     }
 }
