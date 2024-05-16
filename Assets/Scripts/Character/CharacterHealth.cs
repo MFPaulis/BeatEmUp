@@ -11,8 +11,11 @@ public class CharacterHealth : MonoBehaviour
     {
         healthSystem = new HealthSystem(100);
         healthBar.Setup(healthSystem);
+    }
 
-        healthSystem.Damage(10);
+    public void Damage(int damageAmount)
+    {
+        healthSystem.Damage(damageAmount);
     }
 
 }

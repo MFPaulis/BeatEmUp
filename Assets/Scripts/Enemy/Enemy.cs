@@ -1,21 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class Enemy : MonoBehaviour
 {
-
+    
     [SerializeField] public GameObject target;
     [SerializeField] float movingSpeed;
     [SerializeField] float attackSpeed;
-    [SerializeField] float minAttackDistance;
-    [SerializeField] float maxAttackDistance;
+    [SerializeField] float attackDistance;
     [SerializeField] float minDistance;
     [SerializeField] float maxDistance;
     [SerializeField] bool isSpawned = true;
 
+
     private bool attackBack = false;
+    private bool attacking = false;
+
+    private AttackSystem attackSystem;
+    private Animator animator;
+    private AnimatorStateInfo animStateInfo;
+    private float NTime;
 
     //for spawned enemies
     private float countdown = 5f;
@@ -24,6 +31,9 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
+        attackSystem = GetComponent<AttackSystem>();
+        animator = GetComponent<Animator>();
+       
         if (isSpawned) {
             enemySpawner = GetComponentInParent<EnemySpawner>();
             //Debug.Log(enemySpawner);
@@ -34,12 +44,16 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         float distance = (transform.position - target.transform.position).magnitude;
-        if ( distance < maxAttackDistance)
+        if ( distance < attackDistance)
         {
             Attack(distance);
         } else if (distance < maxDistance)
         {
+            attackBack = false;
             ChasePlayer(movingSpeed);
+        } else
+        {
+            attackBack = false;
         }
 
         //for spawned enemies
@@ -49,31 +63,42 @@ public class Enemy : MonoBehaviour
             if (countdown <= 0)
             {
 
-                Destroy(gameObject);
+                //Destroy(gameObject);
 
-                enemySpawner.waves[enemySpawner.currentWaveIndex].enemiesLeft--;
+                //enemySpawner.waves[enemySpawner.currentWaveIndex].enemiesLeft--;
                 
             }
         }
 
     }
 
-    void Attack(float distance)
+    public void AlertObservers(string message)
     {
-        if (distance > minAttackDistance)
-        {
-            attackBack = false;
-        }
-        if (attackBack)
-        {
-            ChasePlayer(-attackSpeed);
-        } else
-        {
-            ChasePlayer(attackSpeed);
-        }
-        if (distance < minDistance)
+        if (message.Equals("AttackAnimationEnded"))
         {
             attackBack = true;
+            attacking = false;
+            animator.SetTrigger("NotAttack");
+        } 
+    }
+
+    void Attack(float distance)
+    {
+        if (!attacking)
+        {
+            if (attackBack)
+            {
+                ChasePlayer(-attackSpeed);
+            }
+            else
+            {
+                ChasePlayer(attackSpeed);
+            }
+        }
+        if (distance < minDistance && !attackBack && !attacking)
+        {
+            attackSystem.Attack(TypeOfAttack.punch);
+            attacking = true;
         } 
     }
 
@@ -82,8 +107,16 @@ public class Enemy : MonoBehaviour
         Vector2 enemyPos = new Vector2(transform.position.x, transform.position.z);
         Vector2 playerPos = new Vector2(target.transform.position.x, target.transform.position.z);
         Vector2 difference = playerPos - enemyPos;
+        RotateEnemy(difference.x);
         enemyPos += (difference.normalized * speed * Time.deltaTime);
         Vector3 newPos = new Vector3(enemyPos.x, transform.position.y, enemyPos.y);
         transform.position = newPos;
     }
+
+    void RotateEnemy(float movingDirection)
+    {
+        if (movingDirection < 0) transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        else if (movingDirection > 0) transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+    }
+
 }
