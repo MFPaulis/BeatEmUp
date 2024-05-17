@@ -86,6 +86,7 @@ public class CharacterMovement : MonoBehaviour
         if (characterController.isGrounded)
         {
             currentMovement.y = groundedGravity;
+            animations.Grounded(true);
         }
         else
         {
@@ -101,6 +102,8 @@ public class CharacterMovement : MonoBehaviour
         if(characterController.isGrounded && isJumpPressed)
         {
             currentMovement.y = initialJumpVelocity;
+            animations.Jump();
+            animations.Grounded(false);
         }
     }
 
@@ -113,5 +116,10 @@ public class CharacterMovement : MonoBehaviour
         HandleJump();
 
         characterController.Move(Time.deltaTime * currentMovement);
+    }
+
+    public CharacterControls GetInputActions()
+    {
+        return inputActions;
     }
 }
