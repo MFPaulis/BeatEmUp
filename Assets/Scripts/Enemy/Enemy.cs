@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] float minDistance;
     [SerializeField] float maxDistance;
     [SerializeField] bool isSpawned = true;
+    [SerializeField] float stunTime = 1;
 
 
     private bool attackBack = false;
@@ -21,12 +22,12 @@ public class Enemy : MonoBehaviour
 
     private AttackSystem attackSystem;
     private Animator animator;
-    private AnimatorStateInfo animStateInfo;
-    private float NTime;
 
     //for spawned enemies
     private float countdown = 5f;
     private EnemySpawner enemySpawner;
+
+    private bool isStunned = false;
 
     // Start is called before the first frame update
     void Start()
@@ -44,18 +45,23 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         float distance = (transform.position - target.transform.position).magnitude;
-        if ( distance < attackDistance)
+        if (!isStunned)
         {
-            Attack(distance);
-        } else if (distance < maxDistance)
-        {
-            attackBack = false;
-            ChasePlayer(movingSpeed);
-        } else
-        {
-            attackBack = false;
+            if (distance < attackDistance)
+            {
+                Attack(distance);
+            }
+            else if (distance < maxDistance)
+            {
+                attackBack = false;
+                ChasePlayer(movingSpeed);
+            }
+            else
+            {
+                attackBack = false;
+            }
         }
-
+        
         //for spawned enemies
         if (isSpawned) {
             countdown -= Time.deltaTime;
@@ -115,10 +121,6 @@ public class Enemy : MonoBehaviour
 
     void RotateEnemy(float movingDirection)
     {
-        /*
-        if (movingDirection < 0) transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        else if (movingDirection > 0) transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        */
         if (movingDirection < 0)
         {
             transform.localRotation = Quaternion.Euler(0, -90, 0);
@@ -128,4 +130,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void Stun()
+    {
+        isStunned = true;
+        StartCoroutine(DisableStun());
+    }
+
+    IEnumerator DisableStun()
+    {
+        yield return new WaitForSeconds(stunTime);
+        isStunned = false;
+    }
 }

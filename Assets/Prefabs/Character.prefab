@@ -686,6 +686,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultComboTimer: 0.4
+  sword: {fileID: 4812264890248590977}
 --- !u!114 &3843834944555486507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2021,6 +2022,7 @@ GameObject:
   - component: {fileID: 4928066756449274217}
   - component: {fileID: 3711128123995993702}
   - component: {fileID: 3068430842700876611}
+  - component: {fileID: 6637532404987929567}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -2200,6 +2202,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0024167413, y: 0.010170499, z: 0.0047241}
   m_Center: {x: 0.000993263, y: -0.0066910805, z: 0.008787631}
+--- !u!114 &6637532404987929567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4812264890248590977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69776f90ed8e13945aae844481d4b20e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collided: 0
 --- !u!1 &4891756795814050641
 GameObject:
   m_ObjectHideFlags: 0

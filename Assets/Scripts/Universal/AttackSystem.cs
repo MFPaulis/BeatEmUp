@@ -14,7 +14,7 @@ public class AttackSystem : MonoBehaviour
     Animator animator;
     [SerializeField] bool isPlayer;
 
-    public bool isPunching;
+    public bool isPunching = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,9 +33,10 @@ public class AttackSystem : MonoBehaviour
 
     public void GetAttacked(int damageAmount)
     {
-        if (isPlayer)
+        gameObject.GetComponent<CharacterHealth>().Damage(damageAmount);
+        if (!isPlayer)
         {
-            gameObject.GetComponent<CharacterHealth>().Damage(damageAmount);
+            gameObject.GetComponent<Enemy>().Stun();
         }
         
     }

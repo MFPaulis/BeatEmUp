@@ -6,17 +6,20 @@ public class AttackBox : MonoBehaviour
 {
     bool isPlayer;
     AttackSystem attackSystem;
+    CharacterAttack characterAttack;
     public bool collided = false;
     // Start is called before the first frame update
     void Start()
     {
-        attackSystem = transform.parent.GetComponent<AttackSystem>();
-        if (transform.parent.tag == "Player")
+        if (transform.parent.parent.tag == "Player")
         {
             isPlayer = true;
+            attackSystem = transform.parent.parent.GetComponent<AttackSystem>();
+            characterAttack = transform.parent.parent.GetComponent<CharacterAttack>();
         } else
         {
             isPlayer = false;
+            attackSystem = transform.parent.GetComponent<AttackSystem>();
         }
     }
     // Update is called once per frame
@@ -27,10 +30,19 @@ public class AttackBox : MonoBehaviour
 
     private void OnTriggerStay(Collider col)
     {
-        if (!collided && col.tag == "Player" && !isPlayer && attackSystem.isPunching)
+        if (!collided)
         {
-            col.gameObject.GetComponent<AttackSystem>().GetAttacked(5);
-            collided = true;
+            if (col.tag == "Player" && !isPlayer && attackSystem.isPunching)
+            {
+                col.gameObject.GetComponent<AttackSystem>().GetAttacked(5);
+                collided = true;
+            }
+            else if (col.tag == "Enemy" && isPlayer && characterAttack.IsSwordAttack())
+            {
+                col.gameObject.GetComponent<AttackSystem>().GetAttacked(5);
+                collided = true;
+            }
         }
+        
     }
 }

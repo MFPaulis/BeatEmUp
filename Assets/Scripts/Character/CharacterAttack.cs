@@ -23,6 +23,8 @@ public class CharacterAttack : MonoBehaviour
     private ComboState currentComboState;
     private bool activateTimerToReset = false;
 
+    [SerializeField] GameObject sword;
+
     private void Awake()
     {
         animations = GetComponentInChildren<CharacterAnimations>();
@@ -64,6 +66,7 @@ public class CharacterAttack : MonoBehaviour
             {
                 currentComboState = ComboState.NONE;
                 activateTimerToReset = false;
+                sword.GetComponent<AttackBox>().collided = false;
             }
         }
     }
@@ -72,4 +75,18 @@ public class CharacterAttack : MonoBehaviour
     {
         ResetComboState();
     }
-}
+
+    public bool IsSwordAttack()
+    {
+        switch (currentComboState)
+        {
+            case ComboState.PUNCH_1: 
+            case ComboState.PUNCH_2: 
+            case ComboState.PUNCH_3:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    }
