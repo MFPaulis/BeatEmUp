@@ -115,8 +115,17 @@ public class Enemy : MonoBehaviour
 
     void RotateEnemy(float movingDirection)
     {
+        /*
         if (movingDirection < 0) transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         else if (movingDirection > 0) transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        */
+        if (movingDirection < 0)
+        {
+            transform.localRotation = Quaternion.Euler(0, -90, 0);
+        } else
+        {
+            transform.localRotation = Quaternion.Euler(0, 90, 0);
+        }
     }
 
 }

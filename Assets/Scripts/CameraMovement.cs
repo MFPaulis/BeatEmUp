@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class CameraMovement : MonoBehaviour
 {
     // Start is called before the first frame update
-    public PlayerMovement player;
+    public CharacterMovement player;
     Vector3 pos;
 
     void Start()

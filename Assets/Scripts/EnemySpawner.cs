@@ -78,7 +78,7 @@ public class EnemySpawner : MonoBehaviour
                 else {
                     randomX = target.transform.position.x + randomX;
                 }
-                float randomY = levelAreaBounds.max.y + 1f;
+                float randomY = levelAreaBounds.max.y;
                 float randomZ = Random.Range(levelAreaBounds.min.z, levelAreaBounds.max.z);
                 Vector3 enemyPosition = new Vector3(randomX, randomY, randomZ);
 
