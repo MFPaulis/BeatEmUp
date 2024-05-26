@@ -6,7 +6,7 @@ public class Weapon : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        other.TryGetComponent<CharacterHealth>(out CharacterHealth health);
+        other.TryGetComponent(out CharacterHealth health);
         if(health != null)
         {
             Debug.Log(other.gameObject.name);
