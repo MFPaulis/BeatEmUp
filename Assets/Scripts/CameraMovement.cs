@@ -15,6 +15,9 @@ public class CameraMovement : MonoBehaviour
     public EnemyManager enemyManager;
     public bool isEnemyInView = false;
 
+    [SerializeField] public CameraTrigger triggerRight;
+    [SerializeField] public CameraTrigger triggerLeft;
+
     void Start()
     {
         bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane));
@@ -38,12 +41,11 @@ public class CameraMovement : MonoBehaviour
     {
         float count = 0;
         enemyManager.UpdateEnemyList();
+        if(triggerRight.isEnemy == true || triggerLeft.isEnemy == true) {
+            isEnemyInView = true;
+        }
         foreach(Enemy enemy in enemyManager.allEnemies) {
-            if(Mathf.Abs(Camera.main.transform.position.x - enemy.transform.position.x) < 7.0f) {
-                isEnemyInView = true;
-                //Debug.Log(isEnemyInView);
-                break;
-            } else {
+            if(Mathf.Abs(Camera.main.transform.position.x - enemy.transform.position.x) > 9.0f) {
                 count++;
             }
         }
@@ -63,4 +65,6 @@ public class CameraMovement : MonoBehaviour
             SceneManager.LoadScene("GameOver");
         }
     }
+
+
 }
