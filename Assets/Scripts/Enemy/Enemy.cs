@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour
     private EnemySpawner enemySpawner;
 
     private bool isStunned = false;
+    public bool isFighting = false;
 
     HealthSystem healthSystem;
 
@@ -53,7 +54,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         float distance = (transform.position - target.transform.position).magnitude;
-        if (!isStunned)
+        if (!isStunned && isFighting)
         {
             if (distance < attackDistance)
             {
