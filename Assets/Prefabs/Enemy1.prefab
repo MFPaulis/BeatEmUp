@@ -423,7 +423,7 @@ PrefabInstance:
       addedObject: {fileID: 3031707698221059935}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 87886e989f329e84fbd053fbcaff4f6b, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3391633884710641729}
+      addedObject: {fileID: 6513382958568323827}
   m_SourcePrefab: {fileID: 100100000, guid: 87886e989f329e84fbd053fbcaff4f6b, type: 3}
 --- !u!1 &8258166051137297344 stripped
 GameObject:
@@ -463,7 +463,7 @@ MonoBehaviour:
   minDistance: 1
   maxDistance: 6
   isSpawned: 1
-  stunTime: 1
+  stunTime: 1.5
 --- !u!136 &3031707698221059935
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -487,7 +487,7 @@ CapsuleCollider:
   m_Height: 1.85
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &3391633884710641729
+--- !u!114 &6513382958568323827
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -496,7 +496,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8258166051137297344}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bec99ce99676b048b352411b836302c, type: 3}
+  m_Script: {fileID: 11500000, guid: 33d3cc337095e3541bde96ac1e9304e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 9215632892110651442}

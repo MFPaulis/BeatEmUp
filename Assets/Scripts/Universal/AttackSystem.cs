@@ -33,9 +33,13 @@ public class AttackSystem : MonoBehaviour
 
     public void GetAttacked(int damageAmount)
     {
-        gameObject.GetComponent<CharacterHealth>().Damage(damageAmount);
-        if (!isPlayer)
+        if (isPlayer)
         {
+            gameObject.GetComponent<CharacterHealth>().Damage(damageAmount);
+        }
+        else
+        {
+            gameObject.GetComponent<EnemyHealth>().Damage(damageAmount);
             gameObject.GetComponent<Enemy>().Stun();
         }
         

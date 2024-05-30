@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] float minDistance;
     [SerializeField] float maxDistance;
     [SerializeField] bool isSpawned = true;
-    [SerializeField] float stunTime = 1;
+    [SerializeField] float stunTime = 1.5f;
 
 
     private bool attackBack = false;
@@ -29,6 +29,8 @@ public class Enemy : MonoBehaviour
 
     private bool isStunned = false;
 
+    HealthSystem healthSystem;
+
     // Start is called before the first frame update
     void Start()
     {   
@@ -39,6 +41,12 @@ public class Enemy : MonoBehaviour
             enemySpawner = GetComponentInParent<EnemySpawner>();
             //Debug.Log(enemySpawner);
         }
+    }
+
+    public void Setup(HealthSystem healthSystem)
+    {
+        this.healthSystem = healthSystem;
+        healthSystem.OnDeath += Die;
     }
 
     // Update is called once per frame
@@ -140,5 +148,11 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(stunTime);
         isStunned = false;
+    }
+
+    private void Die(object sender, System.EventArgs e)
+    {
+        Destroy(gameObject);
+        enemySpawner.waves[enemySpawner.currentWaveIndex].enemiesLeft--;
     }
 }

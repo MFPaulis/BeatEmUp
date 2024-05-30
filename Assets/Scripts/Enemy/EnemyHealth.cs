@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class CharacterHealth : MonoBehaviour
+public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private HealthBar healthBar;
     private HealthSystem healthSystem;
@@ -12,16 +11,11 @@ public class CharacterHealth : MonoBehaviour
     {
         healthSystem = new HealthSystem(100);
         healthBar.Setup(healthSystem);
-        healthSystem.OnDeath += Die;
+        gameObject.GetComponent<Enemy>().Setup(healthSystem);
     }
 
     public void Damage(int damageAmount)
     {
         healthSystem.Damage(damageAmount);
-    }
-
-    public void Die(object sender, System.EventArgs e)
-    {
-        SceneManager.LoadScene("GameOver");
     }
 }
